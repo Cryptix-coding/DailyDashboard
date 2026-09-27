@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Dashboard</title>
+    <!-- HTMX library for dynamic partial updates without custom JavaScript -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <main class="dashboard-grid">
+        <!-- Tile 1: Date & Time -->
+        <section class="tile tile-half">
+            <h2 class="tile-header">🕒 Datum & Uhrzeit</h2>
+            <div class="tile-body"
+                 hx-get="/tile/time" 
+                 hx-trigger="load, every 10s">
+                <div class="subtitle">Lade Zeit...</div>
+            </div>
+        </section>
+
+        <!-- Tile 2: Weather -->
+        <section class="tile tile-half">
+            <h2 class="tile-header">⛅ Aktuelles Wetter</h2>
+            <div class="tile-body"
+                 hx-get="/tile/weather" 
+                 hx-trigger="load, every 15m">
+                <div class="subtitle">Lade Wetter...</div>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

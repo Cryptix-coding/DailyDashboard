@@ -1,0 +1,11 @@
+{% if weather %}
+<div class="weather-container">
+    <div class="weather-icon">{{ weather.icon }}</div>
+    <div>
+        <div class="subtitle">{{ weather.location }}: {{ weather.description }}</div>
+        <div class="primary-value">{{ weather.temperature }}°C</div>
+    </div>
+</div>
+{% else %}
+<div class="subtitle">Wetterdaten werden geladen...</div>
+{% endif %}
