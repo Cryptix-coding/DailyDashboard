@@ -4,6 +4,7 @@ from services.time_service import get_current_datetime
 from services.weather_service import get_current_weather
 from services.calendar_service import get_agenda_days
 from services.waste_service import get_active_waste_alert
+from services.medication_service import get_active_medication_alert
 
 app = Flask(__name__)
 
@@ -40,6 +41,13 @@ def tile_waste():
     """HTMX endpoint to display the waste alert (active 17:00 day before until 09:00 collection day)."""
     waste_items = get_active_waste_alert()
     return render_template("partials/waste_tile.html", waste_items=waste_items)
+
+
+@app.route("/tile/medication")
+def tile_medication():
+    """HTMX endpoint to display the medication blister during intake windows."""
+    med_data = get_active_medication_alert()
+    return render_template("partials/medication_tile.html", med=med_data)
 
 
 if __name__ == "__main__":

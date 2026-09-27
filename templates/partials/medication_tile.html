@@ -1,0 +1,40 @@
+{% if med %}
+<section class="tile tile-med">
+    <!-- Colored Header Banner ("Tablette nehmen") -->
+    <div class="med-header-banner med-bg-{{ med.theme }}">
+        💊 Tablette nehmen ({{ med.slot_label }})
+    </div>
+
+    <!-- Blister Graphic (4 rows x 7 columns, Di on the right -> Mo on the left) -->
+    <div class="blister-wrapper">
+        <!-- Day headers (Mo ... Di) -->
+        <div class="blister-grid blister-header-row">
+            <div class="blister-time-label"></div>
+            {% for col in med.columns %}
+            <div class="blister-day-name {% if col.is_today %}blister-day-today{% endif %}">
+                {{ col.short }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- 4 Time rows (Nüchtern, Morgens, Mittags, Abends) -->
+        {% for row in med.rows %}
+        <div class="blister-grid blister-row {% if row.is_active_row %}blister-row-current{% endif %}">
+            <div class="blister-time-label">
+                <span class="blister-dot med-bg-{{ row.theme }}"></span>
+                {{ row.label }}
+            </div>
+            {% for cell in row.cells %}
+            <div class="blister-cell {% if cell.is_today %}blister-col-today{% endif %}">
+                {% if cell.state == 'taken' %}
+                    <span class="blister-x">✕</span>
+                {% elif cell.state == 'active' %}
+                    <div class="blister-circle med-circle-{{ med.theme }}"></div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}

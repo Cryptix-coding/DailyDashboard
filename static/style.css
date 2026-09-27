@@ -260,3 +260,148 @@ body {
     align-items: center;
     gap: 12px;
 }
+
+/* =========================================
+   Medication Blister Alert Tile
+   ========================================= */
+.tile-med {
+    padding: 20px 28px 24px 28px;
+    border-width: 3px;
+}
+
+.med-header-banner {
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+}
+
+/* 4 Time-of-Day Color Themes (Nüchtern=Red, Morgens=Green, Mittags=Pink, Abends=Orange) */
+.med-bg-red {
+    background-color: #d93025;
+}
+.med-bg-green {
+    background-color: #2e7d32;
+}
+.med-bg-pink {
+    background-color: #e91e63;
+}
+.med-bg-orange {
+    background-color: #ef6c00;
+}
+
+.blister-wrapper {
+    background-color: #f1f3f5;
+    border: 2px solid #ced4da;
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 1 label column + 7 day columns (Mo, So, Sa, Fr, Do, Mi, Di) */
+.blister-grid {
+    display: grid;
+    grid-template-columns: 145px repeat(7, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+.blister-header-row {
+    margin-bottom: 4px;
+}
+
+.blister-day-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 4px 0;
+    border-radius: 8px;
+}
+
+.blister-day-today {
+    background-color: #2c3e50;
+    color: #ffffff;
+}
+
+.blister-row {
+    padding: 4px 6px;
+    border-radius: 10px;
+}
+
+.blister-row-current {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.blister-time-label {
+    font-size: 21px;
+    font-weight: bold;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.blister-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+/* Individual pill compartment */
+.blister-cell {
+    height: 54px;
+    background-color: #ffffff;
+    border: 2px solid #adb5bd;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blister-col-today {
+    border-color: #495057;
+    background-color: #fffdf9;
+}
+
+/* State 1: Already taken (X) */
+.blister-x {
+    font-size: 32px;
+    font-weight: bold;
+    color: #868e96;
+    line-height: 1;
+    user-select: none;
+}
+
+/* State 2: Active compartment to pop right now (colored circle) */
+.blister-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.med-circle-red {
+    border: 6px solid #d93025;
+    background-color: rgba(217, 48, 37, 0.18);
+}
+.med-circle-green {
+    border: 6px solid #2e7d32;
+    background-color: rgba(46, 125, 50, 0.18);
+}
+.med-circle-pink {
+    border: 6px solid #e91e63;
+    background-color: rgba(233, 30, 99, 0.18);
+}
+.med-circle-orange {
+    border: 6px solid #ef6c00;
+    background-color: rgba(239, 108, 0, 0.18);
+}

@@ -46,6 +46,11 @@
             <div hx-get="/tile/waste" 
                  hx-trigger="load, every 5m">
             </div>
+
+            <!-- Medication Blister Alert (active during the 4 daily intake windows) -->
+            <div hx-get="/tile/medication" 
+                 hx-trigger="load, every 1m">
+            </div>
         </div>
     </main>
 
