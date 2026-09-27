@@ -1,3 +1,5 @@
 flask
 requests
 python-dotenv
+icalendar
+recurring-ical-events

@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from config import Config
 from services.time_service import get_current_datetime
 from services.weather_service import get_current_weather
+from services.calendar_service import get_agenda_days
 
 app = Flask(__name__)
 
@@ -24,6 +25,13 @@ def tile_weather():
     """HTMX endpoint to update the weather tile."""
     weather_data = get_current_weather()
     return render_template("partials/weather_tile.html", weather=weather_data)
+
+
+@app.route("/tile/calendar")
+def tile_calendar():
+    """HTMX endpoint to update the 3-day calendar agenda tile."""
+    agenda_data = get_agenda_days()
+    return render_template("partials/calendar_tile.html", agenda=agenda_data)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,27 @@
+{% if agenda %}
+<div class="agenda-container">
+    {% for day in agenda %}
+    <div class="agenda-day {% if day.is_today %}agenda-day-today{% endif %}">
+        <div class="agenda-day-header">
+            <span class="agenda-day-label">{{ day.label }}</span>
+            <span class="agenda-day-date">{{ day.date_str }}</span>
+        </div>
+
+        {% if day.events %}
+        <div class="agenda-events">
+            {% for event in day.events %}
+            <div class="agenda-event-row">
+                <span class="agenda-event-time">{{ event.time }}</span>
+                <span class="agenda-event-title">{{ event.title }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="agenda-empty">Keine Termine</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="subtitle">Kalender wird geladen oder ist nicht verbunden...</div>
+{% endif %}

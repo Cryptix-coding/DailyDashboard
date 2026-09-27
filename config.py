@@ -17,6 +17,9 @@ class Config:
     LATITUDE: float = float(os.getenv("LATITUDE", 49.0583))
     LONGITUDE: float = float(os.getenv("LONGITUDE", 8.0833))
 
+    # Calendar settings (Outlook ICS feed)
+    CALENDAR_ICS_URL: str = os.getenv("CALENDAR_ICS_URL", "")
+
     # German localization constants (independent of the host OS locale)
     WEEKDAYS: list[str] = [
         "Montag", "Dienstag", "Mittwoch", "Donnerstag",
