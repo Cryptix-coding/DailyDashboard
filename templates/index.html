@@ -30,15 +30,23 @@
             </div>
         </section>
 
-        <!-- Tile 3: 3-Day Calendar Agenda (updates every 5 minutes) -->
+        <!-- Tile 3 (Left Column): 5-Day Calendar Agenda -->
         <section class="tile tile-half">
-            <h2 class="tile-header">📅 Termine (Nächste 3 Tage)</h2>
+            <h2 class="tile-header">📅 Termine (Nächste 5 Tage)</h2>
             <div class="tile-body"
                  hx-get="/tile/calendar" 
                  hx-trigger="load, every 5m">
                 <div class="subtitle">Lade Termine...</div>
             </div>
         </section>
+
+        <!-- Right Column: Dynamic alerts & additional tiles -->
+        <div class="dashboard-column tile-half">
+            <!-- Waste Alert (hidden unless active between 17:00 and 09:00) -->
+            <div hx-get="/tile/waste" 
+                 hx-trigger="load, every 5m">
+            </div>
+        </div>
     </main>
 
 </body>

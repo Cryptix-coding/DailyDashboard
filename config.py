@@ -54,3 +54,15 @@ class Config:
         96: ("Gewitter mit Hagel", "⛈️"),
         99: ("Starkes Gewitter", "⛈️")
     }
+
+    # Waste categories: (Display text with colored dot, list of trigger keywords)
+    WASTE_TYPES: list[tuple[str, list[str]]] = [
+        ("⚫ Restmüll (schwarze Tonne)", ["restmüll", "restmuell", "schwarz"]),
+        ("🟤 Biomüll (braune Tonne)", ["biomüll", "biomuell", "bio müll", "bio-müll", "bio", "braun"]),
+        ("🟢 Papier (grüne Tonne)", ["papier", "altpapier", "grün", "gruen"]),
+        ("🟡 Gelber Sack", ["gelber sack", "geleber sack", "gelbe tonne", "gelb", "plastik", "plastick"]),
+        ("⚪ Glasbox", ["glasbox", "glas box", "glas-box", "altglas", "glas"]),
+    ]
+
+    # General fallback keywords if an event just says "Müll" or "Sperrmüll"
+    WASTE_GENERAL_KEYWORDS: list[str] = ["müll", "muell", "abfall", "tonne"]

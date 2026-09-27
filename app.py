@@ -3,6 +3,7 @@ from config import Config
 from services.time_service import get_current_datetime
 from services.weather_service import get_current_weather
 from services.calendar_service import get_agenda_days
+from services.waste_service import get_active_waste_alert
 
 app = Flask(__name__)
 
@@ -29,9 +30,16 @@ def tile_weather():
 
 @app.route("/tile/calendar")
 def tile_calendar():
-    """HTMX endpoint to update the 3-day calendar agenda tile."""
+    """HTMX endpoint to update the 5-day calendar agenda tile."""
     agenda_data = get_agenda_days()
     return render_template("partials/calendar_tile.html", agenda=agenda_data)
+
+
+@app.route("/tile/waste")
+def tile_waste():
+    """HTMX endpoint to display the waste alert (active 17:00 day before until 09:00 collection day)."""
+    waste_items = get_active_waste_alert()
+    return render_template("partials/waste_tile.html", waste_items=waste_items)
 
 
 if __name__ == "__main__":

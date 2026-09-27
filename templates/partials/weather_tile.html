@@ -1,11 +1,28 @@
 {% if weather %}
-<div class="weather-container">
-    <div class="weather-icon">{{ weather.icon }}</div>
-    <div>
-        <div class="subtitle">{{ weather.location }}: {{ weather.description }}</div>
-        <div class="primary-value">{{ weather.temperature }}°C</div>
+<div class="weather-layout">
+    <!-- Left: Current Weather -->
+    <div class="weather-container">
+        <div class="weather-icon">{{ weather.icon }}</div>
+        <div>
+            <div class="subtitle">{{ weather.description }}</div>
+            <div class="primary-value">{{ weather.temperature }}°C</div>
+        </div>
     </div>
+
+    <!-- Right: 2-Day Forecast (Tomorrow & Day after tomorrow) -->
+    {% if weather.forecast %}
+    <div class="weather-forecast">
+        {% for day in weather.forecast %}
+        <div class="forecast-row">
+            <span class="forecast-label">{{ day.label }}:</span>
+            <span class="forecast-icon">{{ day.icon }}</span>
+            <span class="forecast-desc">{{ day.description }}</span>
+            <span class="forecast-temp">{{ day.temp }}°C</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 {% else %}
-<div class="subtitle">Wetterdaten werden geladen...</div>
+<div class="subtitle">Wetterdaten nicht verfügbar</div>
 {% endif %}

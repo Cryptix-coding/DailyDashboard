@@ -14,22 +14,22 @@ body {
     color: var(--text-primary);
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    padding: 30px;
+    padding: 20px 30px;
 }
 
 /* 12-column responsive grid layout */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 25px;
+    gap: 20px;
 }
 
-/* Base tile styling */
+/* Base tile styling (compact vertical padding) */
 .tile {
     background-color: var(--bg-tile);
     border: 2px solid var(--border-color);
     border-radius: 20px;
-    padding: 25px 40px 30px 40px;
+    padding: 18px 35px 22px 35px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
@@ -45,13 +45,13 @@ body {
 
 /* Tile Header (Title bar inside each box) */
 .tile-header {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     color: var(--text-header);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin: 0 0 20px 0;
-    padding-bottom: 12px;
+    margin: 0 0 14px 0;
+    padding-bottom: 8px;
     border-bottom: 2px solid var(--border-color);
 }
 
@@ -65,56 +65,109 @@ body {
 
 /* Typography */
 .subtitle {
-    font-size: 32px;
+    font-size: 26px;
     color: var(--text-secondary);
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 }
 
 .primary-value {
-    font-size: 80px;
+    font-size: 64px;
     font-weight: bold;
     color: var(--text-primary);
-    line-height: 1.1;
+    line-height: 1.05;
 }
 
-/* Weather tile specifics */
+/* Weather tile specifics: Left-aligned current weather, right-aligned forecast block */
+.weather-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+}
+
 .weather-container {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
 }
 
 .weather-icon {
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
     background-color: var(--icon-bg);
-    border-radius: 25px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 85px;
+    font-size: 65px;
     line-height: 1;
     user-select: none;
+}
+
+/* 2-Day Weather Forecast pushed to the right edge */
+.weather-forecast {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 30px;
+    border-left: 2px solid var(--border-color);
+    margin-left: auto;
+}
+
+.forecast-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.forecast-label {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    min-width: 135px;
+}
+
+.forecast-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.forecast-desc {
+    font-size: 22px;
+    color: var(--text-primary);
+    margin-right: 6px;
+}
+
+.forecast-temp {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-left: auto;
 }
 
 /* Calendar agenda specifics */
 .agenda-container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .agenda-day {
     background-color: #f8f9fa;
     border-left: 8px solid #adb5bd;
     border-radius: 12px;
-    padding: 15px 22px;
+    padding: 12px 20px;
 }
 
-/* Highlight Today with a warm accent color */
+/* Highlight Today in Red */
 .agenda-day-today {
-    background-color: #fff8e6;
-    border-left-color: #f39c12;
+    background-color: #fdecea;
+    border-left-color: #d93025;
+}
+
+.agenda-day-today .agenda-day-label {
+    color: #c5221f;
 }
 
 .agenda-day-header {
@@ -122,39 +175,39 @@ body {
     justify-content: flex-start;
     align-items: baseline;
     gap: 14px;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .agenda-day-label {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
     color: var(--text-primary);
 }
 
 .agenda-day-date {
-    font-size: 24px;
+    font-size: 22px;
     color: var(--text-secondary);
 }
 
 .agenda-events {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .agenda-event-row {
     display: flex;
     align-items: center;
     gap: 20px;
-    font-size: 28px;
+    font-size: 26px;
 }
 
 .agenda-event-time {
     font-weight: bold;
     color: var(--text-secondary);
-    min-width: 155px;
+    min-width: 150px;
 }
 
 .agenda-event-title {
@@ -163,7 +216,47 @@ body {
 }
 
 .agenda-empty {
-    font-size: 24px;
+    font-size: 22px;
     color: #888888;
     font-style: italic;
+}
+
+/* Right column container for stacking multiple tiles */
+.dashboard-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Red Waste Alert Box */
+.tile-waste-alert {
+    background-color: #fdecea;
+    border: 4px solid #d93025;
+    box-shadow: 0 6px 16px rgba(217, 48, 37, 0.2);
+}
+
+.waste-alert-header {
+    font-size: 28px;
+    font-weight: bold;
+    color: #c5221f;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 14px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgba(217, 48, 37, 0.3);
+}
+
+.waste-alert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.waste-alert-item {
+    font-size: 34px;
+    font-weight: bold;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }

@@ -1,0 +1,10 @@
+{% if waste_items %}
+<section class="tile tile-waste-alert">
+    <h2 class="waste-alert-header">⚠️ Müll rausbringen: ⚠️</h2>
+    <div class="waste-alert-list">
+        {% for item in waste_items %}
+        <div class="waste-alert-item">{{ item }}</div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
