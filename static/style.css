@@ -280,7 +280,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* 4 Time-of-Day Color Themes (Nüchtern=Red, Morgens=Green, Mittags=Pink, Abends=Orange) */
+/* 4 Time-of-Day Color Themes */
 .med-bg-red {
     background-color: #d93025;
 }
@@ -304,7 +304,7 @@ body {
     gap: 8px;
 }
 
-/* 1 label column + 7 day columns (Mo, So, Sa, Fr, Do, Mi, Di) */
+/* 1 label column + 7 day columns */
 .blister-grid {
     display: grid;
     grid-template-columns: 145px repeat(7, 1fr);
@@ -381,7 +381,7 @@ body {
     user-select: none;
 }
 
-/* State 2: Active compartment to pop right now (colored circle) */
+/* State 2: Active compartment */
 .blister-circle {
     width: 36px;
     height: 36px;
@@ -404,4 +404,76 @@ body {
 .med-circle-orange {
     border: 6px solid #ef6c00;
     background-color: rgba(239, 108, 0, 0.18);
+}
+
+/* =========================================
+   Bottom Row Layout (Emergency & Signal)
+   ========================================= */
+.bottom-row {
+    grid-column: span 12;
+    display: grid;
+    grid-template-columns: 21% 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* =========================================
+   Emergency Tile
+   ========================================= */
+.tile-emergency .tile-header {
+    font-size: 20px;
+}
+
+.tile-emergency .tile-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 0;
+}
+
+.tile-emergency .subtitle {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.tile-emergency .primary-value {
+    font-size: 28px;
+}
+
+/* =========================================
+   Signal Tile
+   ========================================= */
+.tile-signal {
+    height: 100%;
+    box-sizing: border-box;
+    border: 4px solid #3A76F0;
+    background-color: #f8fbff;
+}
+
+.tile-signal .tile-header {
+    color: #3A76F0;
+    border-bottom: 2px solid rgba(58, 118, 240, 0.2);
+    /* Flexbox, um den Titel links und die Zeit rechts anzuordnen */
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.tile-signal .signal-time {
+    font-size: 20px;
+    color: var(--text-secondary);
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.tile-signal .tile-body {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.tile-signal .primary-value {
+    font-size: 52px;
+    line-height: 1.3;
 }

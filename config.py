@@ -66,3 +66,11 @@ class Config:
 
     # General fallback keywords if an event just says "Müll" or "Sperrmüll"
     WASTE_GENERAL_KEYWORDS: list[str] = ["müll", "muell", "abfall", "tonne"]
+
+    # Signal settings
+    SIGNAL_PHONE_NUMBER: str = os.getenv("SIGNAL_PHONE_NUMBER", "")
+    SIGNAL_GROUP_ID: str = os.getenv("SIGNAL_GROUP_ID", "")
+
+    # Emergency Contact
+    EMERGENCY_CONTACT_NAME: str = os.getenv("EMERGENCY_CONTACT_NAME", "Notfall-Kontakt")
+    EMERGENCY_CONTACT_NUMBER: str = os.getenv("EMERGENCY_CONTACT_NUMBER", "Keine Nummer hinterlegt")

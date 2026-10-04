@@ -60,15 +60,22 @@ def get_agenda_days() -> Optional[list[dict[str, Any]]]:
         dtend_prop = event.get("DTEND")
         dtend = dtend_prop.dt if dtend_prop else None
 
+        is_expired_today = False
+
         # Distinguish between timed events (datetime) and all-day events (date)
         if isinstance(dtstart, datetime.datetime):
-            local_start = dtstart.astimezone() if dtstart.tzinfo else dtstart
+            local_start = dtstart.astimezone() if dtstart.tzinfo else dtstart.replace(tzinfo=now.tzinfo)
             start_date = local_start.date()
             time_str = local_start.strftime("%H:%M Uhr")
             sort_key = local_start.strftime("%H:%M")
 
             if dtend and isinstance(dtend, datetime.datetime):
-                local_end = dtend.astimezone() if dtend.tzinfo else dtend
+                local_end = dtend.astimezone() if dtend.tzinfo else dtend.replace(tzinfo=now.tzinfo)
+                
+                # Flag as expired if current time is > 1 hour past the event's end
+                if now > local_end + datetime.timedelta(hours=1):
+                    is_expired_today = True
+
                 # If a timed event ends exactly at 00:00, it doesn't count for the next day
                 if local_end.time() == datetime.time.min and local_end.date() > start_date:
                     end_date = local_end.date() - datetime.timedelta(days=1)
@@ -76,6 +83,10 @@ def get_agenda_days() -> Optional[list[dict[str, Any]]]:
                     end_date = local_end.date()
             else:
                 end_date = start_date
+                # Fallback: assume 1 hour duration if no end time is specified
+                implied_end = local_start + datetime.timedelta(hours=1)
+                if now > implied_end + datetime.timedelta(hours=1):
+                    is_expired_today = True
         else:
             start_date = dtstart
             time_str = "Ganztägig"
@@ -96,6 +107,11 @@ def get_agenda_days() -> Optional[list[dict[str, Any]]]:
 
         while current_date <= final_date:
             if current_date in agenda:
+                # Skip rendering the event today if it has already expired
+                if current_date == today and is_expired_today:
+                    current_date += datetime.timedelta(days=1)
+                    continue
+
                 # If a timed event spans multiple days, show "Ganztägig" on subsequent days
                 display_time = time_str if current_date == start_date else "Ganztägig"
                 display_sort = sort_key if current_date == start_date else "00:00"

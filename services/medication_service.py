@@ -7,22 +7,22 @@ MEDICATION_SLOTS = [
     {
         "id": "nuechtern",
         "label": "Nüchtern",
-        "start": (6, 30),
-        "end": (8, 0),
+        "start": (7, 0),
+        "end": (9, 0),
         "theme": "red"
     },
     {
         "id": "morgens",
         "label": "Morgens",
-        "start": (8, 0),
-        "end": (9, 30),
+        "start": (9, 0),
+        "end": (10, 30),
         "theme": "green"
     },
     {
         "id": "mittags",
         "label": "Mittags",
-        "start": (11, 30),
-        "end": (13, 0),
+        "start": (12, 0),
+        "end": (14, 0),
         "theme": "pink"
     },
     {

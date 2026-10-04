@@ -1,0 +1,13 @@
+{% if signal %}
+<section class="tile tile-signal">
+    <h2 class="tile-header">
+        <span>💬 Nachricht von {{ signal.sender }}</span>
+        <span class="signal-time">Empfangen um {{ signal.timestamp_display }} Uhr</span>
+    </h2>
+    <div class="tile-body">
+        <div class="primary-value">
+            "{{ signal.text }}"
+        </div>
+    </div>
+</section>
+{% endif %}

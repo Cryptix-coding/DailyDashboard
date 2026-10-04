@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Daily Dashboard</title>
-    <!-- HTMX library for dynamic partial updates without custom JavaScript -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
     <main class="dashboard-grid">
-        <!-- Tile 1: Date & Time -->
         <section class="tile tile-half">
             <h2 class="tile-header">🕒 Datum & Uhrzeit</h2>
             <div class="tile-body"
@@ -20,7 +18,6 @@
             </div>
         </section>
 
-        <!-- Tile 2: Weather -->
         <section class="tile tile-half">
             <h2 class="tile-header">⛅ Aktuelles Wetter</h2>
             <div class="tile-body"
@@ -30,7 +27,6 @@
             </div>
         </section>
 
-        <!-- Tile 3 (Left Column): 5-Day Calendar Agenda -->
         <section class="tile tile-half">
             <h2 class="tile-header">📅 Termine (Nächste 5 Tage)</h2>
             <div class="tile-body"
@@ -40,16 +36,23 @@
             </div>
         </section>
 
-        <!-- Right Column: Dynamic alerts & additional tiles -->
         <div class="dashboard-column tile-half">
-            <!-- Waste Alert (hidden unless active between 17:00 and 09:00) -->
             <div hx-get="/tile/waste" 
                  hx-trigger="load, every 5m">
             </div>
 
-            <!-- Medication Blister Alert (active during the 4 daily intake windows) -->
             <div hx-get="/tile/medication" 
                  hx-trigger="load, every 1m">
+            </div>
+        </div>
+
+        <div class="bottom-row">
+            <div hx-get="/tile/emergency" 
+                 hx-trigger="load">
+            </div>
+
+            <div hx-get="/tile/signal" 
+                 hx-trigger="load, every 5s">
             </div>
         </div>
     </main>
