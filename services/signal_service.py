@@ -7,14 +7,7 @@ from typing import Any, Optional
 from config import Config
 
 # Holds the currently active message
-#_active_message: Optional[dict[str, Any]] = None
-
-# Temporär in das hier:
-_active_message: Optional[dict[str, Any]] = {
-    "sender": "Test (Lokal)",
-    "text": "Hallo Oma! Wir kommen heute Nachmittag auf einen Kaffee vorbei. Freuen uns schon!",
-    "timestamp_display": "14:30"
-}
+_active_message: Optional[dict[str, Any]] = None
 
 
 def _send_read_receipt(sender_number: str, timestamp: int) -> None:

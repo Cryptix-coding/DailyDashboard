@@ -9,7 +9,10 @@
 <body>
 
     <main class="dashboard-grid">
-        <section class="tile tile-half">
+        
+        <!-- ===== TOP ROW (Time, Weather, Emergency & Theme Toggle) ===== -->
+        <!-- 1. Time (Left, 3 Columns) -->
+        <section class="tile" style="grid-column: span 3;">
             <h2 class="tile-header">🕒 Datum & Uhrzeit</h2>
             <div class="tile-body"
                  hx-get="/tile/time" 
@@ -18,7 +21,8 @@
             </div>
         </section>
 
-        <section class="tile tile-half">
+        <!-- 2. Weather (Center, 6 Columns) -->
+        <section class="tile" style="grid-column: span 6;">
             <h2 class="tile-header">⛅ Aktuelles Wetter</h2>
             <div class="tile-body"
                  hx-get="/tile/weather" 
@@ -27,6 +31,24 @@
             </div>
         </section>
 
+        <!-- 3. Emergency Contact & Dark Mode Switch (Right, 3 Columns) -->
+        <div style="grid-column: span 3; display: flex; gap: 15px; align-items: stretch;">
+            
+            <!-- Emergency Tile (flex-grow fills the remaining space) -->
+            <div hx-get="/tile/emergency" 
+                 hx-trigger="load"
+                 style="flex-grow: 1; display: flex; flex-direction: column;">
+            </div>
+
+            <!-- Theme Toggle Switch (Vertical Pill) -->
+            <div class="theme-toggle-wrapper" onclick="toggleTheme()">
+                <div class="theme-toggle-btn" id="btn-light">☀️</div>
+                <div class="theme-toggle-btn" id="btn-dark">🌙</div>
+            </div>
+            
+        </div>
+
+        <!-- ===== MIDDLE ROW (Calendar & Alerts) ===== -->
         <section class="tile tile-half">
             <h2 class="tile-header">📅 Termine (Nächste 5 Tage)</h2>
             <div class="tile-body"
@@ -46,16 +68,43 @@
             </div>
         </div>
 
-        <div class="bottom-row">
-            <div hx-get="/tile/emergency" 
-                 hx-trigger="load">
-            </div>
-
-            <div hx-get="/tile/signal" 
-                 hx-trigger="load, every 5s">
-            </div>
+        <!-- ===== BOTTOM ROW (Signal over full width) ===== -->
+        <div style="grid-column: span 12;"
+             hx-get="/tile/signal" 
+             hx-trigger="load, every 5s">
         </div>
+        
     </main>
 
+    <!-- Script for Dark Mode Toggle -->
+    <script>
+        // Check saved theme on page load
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('btn-dark').classList.add('active');
+        } else {
+            document.getElementById('btn-light').classList.add('active');
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark-mode');
+            
+            if (isDark) {
+                // Switch to Light Mode
+                body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('btn-dark').classList.remove('active');
+                document.getElementById('btn-light').classList.add('active');
+            } else {
+                // Switch to Dark Mode
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('btn-light').classList.remove('active');
+                document.getElementById('btn-dark').classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
