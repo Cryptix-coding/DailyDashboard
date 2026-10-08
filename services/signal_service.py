@@ -12,7 +12,6 @@ from config import Config
 _active_message: Optional[dict[str, Any]] = None
 
 # Smart toggle: Checks if signal-cli is installed on the current system.
-# If not (e.g., local development environment), it falls back to a file-based mock service.
 _signal_cli_available = shutil.which("signal-cli") is not None
 
 def _send_read_receipt(sender_number: str, timestamp: int) -> None:
@@ -35,6 +34,26 @@ def _send_read_receipt(sender_number: str, timestamp: int) -> None:
     except Exception as error:
         print(f"[SignalService] Error sending read receipt: {error}")
 
+def _send_group_message(text: str) -> None:
+    """Send a confirmation message to the Signal group."""
+    if not _signal_cli_available or not Config.SIGNAL_GROUP_ID:
+        return
+    try:
+        subprocess.run(
+            [
+                "signal-cli",
+                "-a", Config.SIGNAL_PHONE_NUMBER,
+                "send",
+                "-m", text,
+                "-g", Config.SIGNAL_GROUP_ID
+            ],
+            capture_output=True,
+            check=False
+        )
+    except Exception as error:
+        print(f"[SignalService] Error sending group confirmation: {error}")
+
+
 def _listen_loop() -> None:
     """Background loop polling either signal-cli (Production) or mock_signal.txt (Local Dev)."""
     global _active_message
@@ -51,7 +70,6 @@ def _listen_loop() -> None:
         
         while True:
             try:
-                # Check if the mock file exists and has been modified recently
                 if os.path.exists(mock_file):
                     current_mtime = os.path.getmtime(mock_file)
                     
@@ -74,9 +92,8 @@ def _listen_loop() -> None:
             except Exception as e:
                 print(f"[SignalService (Mock)] Error reading mock file: {e}")
                 
-            # Rapid 2-second poll rate for immediate feedback during development
             time.sleep(2)
-        return # Exit function for local mode, ignoring production logic below
+        return
 
     # ==========================================
     # PRODUCTION MODE (Raspberry Pi)
@@ -84,7 +101,6 @@ def _listen_loop() -> None:
     print("[SignalService] Background listener started (Real signal-cli mode).")
     while True:
         try:
-            # Fetch messages using signal-cli (enforcing utf-8 and error=replace to prevent emoji crashes)
             result = subprocess.run(
                 ["signal-cli", "--output", "json", "-a", Config.SIGNAL_PHONE_NUMBER, "receive"],
                 capture_output=True, 
@@ -108,26 +124,31 @@ def _listen_loop() -> None:
                 envelope = data.get("envelope", {})
                 data_message = envelope.get("dataMessage", {})
                 
-                # Ignore non-text messages (e.g., typing indicators)
+                # Ignore non-text messages
                 if not data_message:
+                    continue
+                
+                sender_number = envelope.get("sourceNumber")
+                
+                # CRITICAL: Prevent infinite loop by ignoring messages sent by the Pi itself
+                if sender_number == Config.SIGNAL_PHONE_NUMBER:
                     continue
                     
                 # Process only messages originating from the designated group
                 if data_message.get("groupInfo", {}).get("groupId") == Config.SIGNAL_GROUP_ID:
                     msg_text = data_message.get("message", "")
                     
-                    # Resolve sender name: fallback to number, then map via Config if defined
-                    raw_sender = envelope.get("sourceName") or envelope.get("sourceNumber") or "Family"
+                    # Resolve sender name
+                    raw_sender = envelope.get("sourceName") or sender_number or "Family"
                     sender_name = Config.SIGNAL_USER_MAPPING.get(raw_sender, raw_sender)
-                    
-                    sender_number = envelope.get("sourceNumber")
                     msg_timestamp = data_message.get("timestamp")
                     
                     if msg_text:
-                        # Robust clear command detection (case-insensitive, allows punctuation)
+                        # Robust clear command detection
                         if "löschen" in msg_text.strip().lower():
                             _active_message = None
                             print("[SignalService] Active message cleared via command.")
+                            _send_group_message("🗑️ Deleted")
                         else:
                             _active_message = {
                                 "sender": sender_name,
@@ -135,6 +156,7 @@ def _listen_loop() -> None:
                                 "timestamp_display": datetime.datetime.now().strftime("%d.%m.%Y um %H:%M")
                             }
                             print(f"[SignalService] New message processed from {sender_name}.")
+                            _send_group_message("✅ Displayed")
                             
                         # Trigger read receipt
                         if sender_number and msg_timestamp:
@@ -143,7 +165,6 @@ def _listen_loop() -> None:
         except Exception as error:
             print(f"[SignalService] Error fetching messages: {error}")
             
-        # Standard poll rate
         time.sleep(5)
 
 def start_signal_listener() -> None:
