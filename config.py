@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 
 # Load environment variables from the local .env file
@@ -71,6 +72,16 @@ class Config:
     SIGNAL_PHONE_NUMBER: str = os.getenv("SIGNAL_PHONE_NUMBER", "")
     SIGNAL_GROUP_ID: str = os.getenv("SIGNAL_GROUP_ID", "")
 
-    # Emergency Contact
-    EMERGENCY_CONTACT_NAME: str = os.getenv("EMERGENCY_CONTACT_NAME", "Notfall-Kontakt")
-    EMERGENCY_CONTACT_NUMBER: str = os.getenv("EMERGENCY_CONTACT_NUMBER", "Keine Nummer hinterlegt")
+    # Parse JSON mapping for Signal users (Fallback to empty dict if not set or invalid)
+    _mapping_str = os.getenv("SIGNAL_USER_MAPPING", "{}")
+    try:
+        SIGNAL_USER_MAPPING: dict[str, str] = json.loads(_mapping_str)
+    except json.JSONDecodeError:
+        SIGNAL_USER_MAPPING = {}
+
+    # Parse JSON list for Emergency Contacts (Fallback to empty list if not set or invalid)
+    _emergency_str = os.getenv("EMERGENCY_CONTACTS", "[]")
+    try:
+        EMERGENCY_CONTACTS: list[dict[str, str]] = json.loads(_emergency_str)
+    except json.JSONDecodeError:
+        EMERGENCY_CONTACTS = []

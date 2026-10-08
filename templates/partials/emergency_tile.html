@@ -1,13 +1,15 @@
 <section class="tile tile-emergency">
-    <h2 class="tile-header">
-        📞 Notfall-Kontakt
-    </h2>
-    <div class="tile-body">
-        <div class="subtitle">
-            {{ contact.name }}
-        </div>
-        <div class="primary-value">
-            {{ contact.number }}
-        </div>
+    <h2 class="tile-header">📞 Notfall-Kontakt</h2>
+    <div class="tile-body" style="gap: 6px; padding: 5px 0; justify-content: flex-start;">
+        {% if contacts %}
+            {% for contact in contacts %}
+                <div class="contact-item" style="margin-bottom: 4px;">
+                    <div class="subtitle" style="font-size: 16px; margin-bottom: 0;">{{ contact.name }}</div>
+                    <div class="primary-value" style="font-size: 18px;">{{ contact.number }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="subtitle" style="font-size: 16px;">Keine Kontakte hinterlegt.</div>
+        {% endif %}
     </div>
 </section>

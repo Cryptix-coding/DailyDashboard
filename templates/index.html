@@ -34,13 +34,13 @@
         <!-- 3. Emergency Contact & Dark Mode Switch (Right, 3 Columns) -->
         <div style="grid-column: span 3; display: flex; gap: 15px; align-items: stretch;">
             
-            <!-- Emergency Tile (flex-grow fills the remaining space) -->
+            <!-- Emergency Tile -->
             <div hx-get="/tile/emergency" 
                  hx-trigger="load"
                  style="flex-grow: 1; display: flex; flex-direction: column;">
             </div>
 
-            <!-- Theme Toggle Switch (Vertical Pill) -->
+            <!-- Theme Toggle Switch -->
             <div class="theme-toggle-wrapper" onclick="toggleTheme()">
                 <div class="theme-toggle-btn" id="btn-light">☀️</div>
                 <div class="theme-toggle-btn" id="btn-dark">🌙</div>
@@ -69,7 +69,7 @@
         </div>
 
         <!-- ===== BOTTOM ROW (Signal over full width) ===== -->
-        <div style="grid-column: span 12;"
+        <div style="grid-column: span 12; min-height: 140px;"
              hx-get="/tile/signal" 
              hx-trigger="load, every 5s">
         </div>
@@ -78,7 +78,6 @@
 
     <!-- Script for Dark Mode Toggle -->
     <script>
-        // Check saved theme on page load
         const savedTheme = localStorage.getItem('theme') || 'light';
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
@@ -92,13 +91,11 @@
             const isDark = body.classList.contains('dark-mode');
             
             if (isDark) {
-                // Switch to Light Mode
                 body.classList.remove('dark-mode');
                 localStorage.setItem('theme', 'light');
                 document.getElementById('btn-dark').classList.remove('active');
                 document.getElementById('btn-light').classList.add('active');
             } else {
-                // Switch to Dark Mode
                 body.classList.add('dark-mode');
                 localStorage.setItem('theme', 'dark');
                 document.getElementById('btn-light').classList.remove('active');

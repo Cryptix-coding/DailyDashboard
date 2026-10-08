@@ -6,7 +6,7 @@ from services.calendar_service import get_agenda_days
 from services.waste_service import get_active_waste_alert
 from services.medication_service import get_active_medication_alert
 from services.signal_service import start_signal_listener, get_active_signal_message
-from services.emergency_service import get_emergency_contact
+from services.emergency_service import get_emergency_contacts
 
 app = Flask(__name__)
 
@@ -54,8 +54,8 @@ def tile_signal():
 
 @app.route("/tile/emergency")
 def tile_emergency():
-    contact_data = get_emergency_contact()
-    return render_template("partials/emergency_tile.html", contact=contact_data)
+    contacts_data = get_emergency_contacts()
+    return render_template("partials/emergency_tile.html", contacts=contacts_data)
 
 
 if __name__ == "__main__":
