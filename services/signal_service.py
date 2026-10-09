@@ -148,7 +148,7 @@ def _listen_loop() -> None:
                         if "löschen" in msg_text.strip().lower():
                             _active_message = None
                             print("[SignalService] Active message cleared via command.")
-                            _send_group_message("🗑️ Deleted")
+                            _send_group_message("❌ Deleted")
                         else:
                             _active_message = {
                                 "sender": sender_name,

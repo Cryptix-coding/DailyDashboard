@@ -5,6 +5,12 @@
     <title>Daily Dashboard</title>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Ensures scrolling looks smooth and pleasant, not abrupt */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body>
 
@@ -76,8 +82,19 @@
         
     </main>
 
-    <!-- Script for Dark Mode Toggle -->
+    <!-- Script for Dashboard Logic -->
     <script>
+        // ==========================================
+        // USER CONFIGURATION
+        // ==========================================
+        const DASHBOARD_CONFIG = {
+            enableAutoScroll: true,         // Set to false to disable auto-scrolling entirely
+            scrollWaitTimeMs: 60000         // Time to wait at top/bottom in milliseconds (60000 = 1 minute)
+        };
+
+        // ==========================================
+        // 1. Dark Mode Logic
+        // ==========================================
         const savedTheme = localStorage.getItem('theme') || 'light';
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
@@ -101,6 +118,48 @@
                 document.getElementById('btn-light').classList.remove('active');
                 document.getElementById('btn-dark').classList.add('active');
             }
+        }
+
+        // ==========================================
+        // 2. Smart Auto-Scroll Logic
+        // ==========================================
+        let scrollPosition = 'TOP'; 
+        let isWaiting = false;
+
+        function handleSmartScroll() {
+            if (!DASHBOARD_CONFIG.enableAutoScroll || isWaiting) return;
+
+            // Check if the content is actually larger than the screen (needs scrolling)
+            const needsScrolling = document.documentElement.scrollHeight > window.innerHeight;
+
+            if (needsScrolling) {
+                isWaiting = true;
+                
+                if (scrollPosition === 'TOP') {
+                    // Scroll down to the bottom
+                    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+                    scrollPosition = 'BOTTOM';
+                } else {
+                    // Scroll back to the top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    scrollPosition = 'TOP';
+                }
+                
+                // Wait for the configured time before moving again
+                setTimeout(() => {
+                    isWaiting = false;
+                }, DASHBOARD_CONFIG.scrollWaitTimeMs);
+
+            } else if (window.scrollY > 0) {
+                // If content shrank (e.g. message deleted), immediately return to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                scrollPosition = 'TOP';
+            }
+        }
+
+        // Check the scroll state every 5 seconds if enabled
+        if (DASHBOARD_CONFIG.enableAutoScroll) {
+            setInterval(handleSmartScroll, 5000);
         }
     </script>
 </body>
